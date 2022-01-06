@@ -4,7 +4,25 @@ from wordle_strat_a import StratA
 
 from time import time
 
-def get_fives():
+
+def get_fives_big():
+    fives = []
+
+    uplets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+    with open('words.txt') as f:
+        for line in f:
+            word = line.rstrip()
+            
+            if len(word) != 5 or any(c not in uplets for c in word.upper()):
+                continue
+
+            fives.append(word.upper())
+
+    return fives
+
+
+def get_fives_small():
     return list(map(lambda word: word.upper(), five_words.fives()))
 
 
@@ -44,8 +62,7 @@ def score_strategy(strategy, fives):
 
     return (good, bad, guesses)
 
-fives = get_fives()
-
+fives = get_fives_small()
 strategies = [StratA(fives)]
 
 for strategy in strategies:
