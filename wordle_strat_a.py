@@ -52,7 +52,7 @@ class StratA:
         self.definite = ['' for _ in range(5)]
         self.guesses = []
 
-    def guess(self):        
+    def guess(self):
         if all(c for c in self.definite):
             return ''.join(self.definite)
 
@@ -65,7 +65,9 @@ class StratA:
                 break
         else:
             for five in self.fives:
-                if any((i not in self.knowledge[five[i]]) or (self.definite[i] and self.definite[i] != five[i]) for i in range(5)):
+                if any(i not in self.knowledge[five[i]] for i in range(5)):
+                    continue
+                if any(self.definite[i] and self.definite[i] != five[i] for i in range(5)):
                     continue
 
                 guess = five

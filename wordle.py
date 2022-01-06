@@ -1,8 +1,6 @@
-import five_words
-
-from wordle_strat_a import StratA
-
 from time import time
+import five_words
+from wordle_strat_a import StratA
 
 
 def get_fives_big():
@@ -10,10 +8,10 @@ def get_fives_big():
 
     uplets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
-    with open('words.txt') as f:
-        for line in f:
+    with open('words.txt') as file:
+        for line in file:
             word = line.rstrip()
-            
+
             if len(word) != 5 or any(c not in uplets for c in word.upper()):
                 continue
 
@@ -28,14 +26,18 @@ def get_fives_small():
 
 def score_word(strategy, word, fiveset):
     strategy.reset()
-    
+
     for guessnum in range(1, 7):
         guess = strategy.guess()
-        
+
         if guess == word:
             return guessnum
 
-        feedback = [-2] * 5 if guess not in fiveset else [1 if guess[i] == word[i] else 0 if guess[i] in word else -1 for i in range(5)]
+        if guess not in fiveset:
+            strategy.learn([-2] * 5)
+            continue
+
+        feedback = [1 if guess[i] == word[i] else 0 if guess[i] in word else -1 for i in range(5)]
         strategy.learn(feedback)
 
     return -1
@@ -46,16 +48,18 @@ def score_strategy(strategy, fives):
     good = 0
     bad = 0
     guesses = 0
-    t = time()
+    time_stamp = time()
 
     for i, word in enumerate(fives):
         if i > 0 and i % 1000 == 0:
-            print(f'Played another 1000 words in {round(time()-t,2)} seconds. Have solved {good} out of {good+bad}')
-            t = time()
+            rounded_time = round(time()-time_stamp,2)
+            message = f'Played another 1000 words in {rounded_time} seconds. Have solved {good} out of {good+bad}'
+            print(message)
+            time_stamp = time()
         score = score_word(strategy, word, fiveset)
 
         if score == -1:
-            bad += 1            
+            bad += 1
         else:
             good += 1
             guesses += score
