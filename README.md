@@ -4,7 +4,7 @@ It deals with the very excellent game Wordle, found at https://www.powerlanguage
 
 The author of this repository is in no way affiliated with the author(s) of Wordle.
 
-Currently, there are four files of interest:
+Currently, there are five files of interest:
 
 **wordle.py**
 
@@ -28,4 +28,8 @@ A strategy that is being worked on, but currently solves 94% of the available wo
 
 **words.txt**
 
-A general purpose English dictionary from which the collection of five-letter words is gathered. In the future, the actual dictionary used by the game might get used instead.
+A general purpose English dictionary from which the collection of five-letter words can be assembled.
+
+**five_words.py**
+
+The source of a smaller list of five-letter words. This is now the default choice.
